@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package dvbots;
+
+import "dvbots/dvbots.proto";
+import "recipients/recipients.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(recipients.GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(recipients.DeleteRequest) returns (DeleteResponse) {}
+  rpc SetParameter(SetParameterRequest) returns (SetParameterResponse) {}
+  rpc RemoveParameter(RemoveParameterRequest) returns (RemoveParameterResponse) {}
+  rpc GetParameter(GetParameterRequest) returns (GetParameterResponse) {}
+  rpc GetParameterList(GetParameterListRequest) returns (stream GetParameterListResponse) {}
+  rpc ResetParameter(ResetParameterRequest) returns (stream ResetParameterResponse) {}
+}

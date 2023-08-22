@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package userprefs;
+
+import "userprefs/userprefs.proto";
+
+service Service {
+  // Set: before upsert, please validate the userprefs.key in userprefs_default.key
+  rpc Set(SetRequest) returns (SetResponse) {} // Upsert
+  rpc Remove(RemoveRequest) returns (RemoveResponse) {} // Delete: set status = terrminated
+
+  // Only get item with status = 1. show NOT found if status <> 1.
+  // While getting if the item with key is not exist in userprefs => get item key from userprefs_default.
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {} // for BO admin
+  rpc Reset(ResetRequest) returns (stream ResetResponse) {} // Remove all items of user (status = terrminated)
+}

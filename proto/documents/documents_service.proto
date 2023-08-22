@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package documents;
+
+import "documents/documents.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc SetData(SetDataRequest) returns (SetDataResponse) {}
+  rpc UpdateData(UpdateDataRequest) returns (UpdateDataResponse) {}
+  rpc RemoveData(RemoveDataRequest) returns (RemoveDataResponse) {}
+}

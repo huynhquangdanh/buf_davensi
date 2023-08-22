@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package bankaccounts;
+
+import "common/errors.proto";
+import "recipients/recipients.proto";
+import "uoms/uoms.proto";
+import "bankbranches/bankbranches.proto";
+
+enum Type {
+  TYPE_UNSPECIFIED = 0;
+  TYPE_CURRENT = 1;
+  TYPE_CASH_PAYMENT = 2;
+  TYPE_CHARGES = 3;
+  TYPE_CASH_INCOME = 4;
+  TYPE_COMMISSION = 5;
+  TYPE_CLEARING_PARTICIPANT_SETTLEMENT_ACCOUNT = 6;
+  TYPE_LIMITED_LIQUIDITY_SAVINGS_ACCOUNT = 7;
+  TYPE_LOAN = 8;
+  TYPE_MARGINAL_LENDING = 9;
+  TYPE_MONEY_MARKET = 10;
+  TYPE_NON_RESIDENT_EXTERNAL = 11;
+  TYPE_OVERDRAFT = 12;
+  TYPE_OVER_NIGHT_DEPOSIT = 13;
+  TYPE_OTHER_ACCOUNT = 14;
+  TYPE_SETTLEMENT = 15;
+  TYPE_SALARY = 16;
+  TYPE_SAVINGS = 17;
+  TYPE_TAX = 18;
+  TYPE_TRANSACTING_ACCOUNT = 19;
+  TYPE_CASH_TRADING = 20;
+  TYPE_CREDIT_CARD = 21;
+}
+
+message TypeList {
+  repeated Type list = 1;
+}
+
+// Backed by table 'recipients' + 'bankaccounts'
+// bankaccounts are recipients of type 16
+message BankAccount {
+  recipients.Recipient recipient = 1;
+  // Fields from table 'bankaccounts'
+  bankbranches.BankBranch bank_branch = 2;
+  Type bank_account_type = 3;
+  optional uoms.UoM currency = 4; // nil if multi-currency account
+  string pan = 5;
+  optional string masked_pan = 6;
+  optional string bban = 7;
+  optional string iban = 8;
+  optional string external_id = 9;
+}
+
+message List {
+  repeated BankAccount list = 1;
+}
+
+message CreateRequest {
+  recipients.CreateRequest recipient = 1;
+  optional bankbranches.Select bank_branch = 2;
+  optional Type bank_account_type = 3;
+  optional uoms.Select currency = 4; // nil if multi-currency account, potentially supports cryptocurrencies
+  optional string pan = 5;
+  optional string masked_pan = 6;
+  optional string bban = 7;
+  optional string iban = 8;
+  optional string external_id = 9;
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    BankAccount bank_account = 2;
+  }
+}
+
+message UpdateRequest {
+  recipients.UpdateRequest recipient = 1;
+  optional bankbranches.Select bank_branch = 2;
+  optional Type bank_account_type = 3;
+  optional uoms.Select currency = 4;
+  optional string pan = 5;
+  optional string masked_pan = 6;
+  optional string bban = 7;
+  optional string iban = 8;
+  optional string external_id = 9;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    BankAccount bank_account = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    BankAccount bank_account = 2;
+  }
+}
+
+// GetList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional recipients.GetListRequest recipient = 1;
+  optional bankbranches.GetListRequest bank_branch = 2;
+  optional TypeList bank_account_type = 3;
+  optional uoms.GetListRequest currency = 4;
+  optional string pan = 5;
+  optional string masked_pan = 6;
+  optional string bban = 7;
+  optional string iban = 8;
+  optional string external_id = 9;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    BankAccount bank_account = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    BankAccount bank_account = 2;
+  }
+}

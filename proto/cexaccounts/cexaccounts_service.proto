@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package cexaccounts;
+
+import "cexaccounts/cexaccounts.proto";
+import "recipients/recipients.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(recipients.GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(recipients.DeleteRequest) returns (DeleteResponse) {}
+}

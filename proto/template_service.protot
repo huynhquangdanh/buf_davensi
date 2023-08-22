@@ -1,0 +1,15 @@
+// Search and replace:
+// - <entityclass> by the entity class (typically the name of the backing table)
+
+syntax = "proto3";
+
+package <entityclass>;
+
+import "<entityclass>/<entityclass>.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+}

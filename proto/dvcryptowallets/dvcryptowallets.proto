@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package dvcryptowallets;
+
+import "common/errors.proto";
+import "recipients/recipients.proto";
+import "blockchains/blockchains.proto";
+
+// TO-DO: to be completed
+enum Type {
+  TYPE_UNSPECIFIED = 0;
+}
+
+message TypeList {
+  repeated Type list = 1;
+}
+
+// Backed by table 'recipients' + 'dvcryptowallets'
+// dvcryptowallets are recipients of type 2
+message DVCryptoWallet {
+  recipients.Recipient recipient = 1;
+  // Fields from table 'dvcryptowallets'
+  Type wallet_type = 2;
+  blockchains.Blockchain blockchain = 3;
+  string address = 4;
+  // TO-DO: Add more fields from table 'dvcryptowallets'
+}
+
+message List {
+  repeated DVCryptoWallet list = 1;
+}
+
+message CreateRequest {
+  recipients.CreateRequest recipient = 1;
+  Type wallet_type = 2;
+  blockchains.Select blockchain = 3;
+  string address = 4;
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    DVCryptoWallet dvcryptowallet = 2;
+  }
+}
+
+message UpdateRequest {
+  recipients.UpdateRequest recipient = 1;
+  optional Type wallet_type = 2;
+  optional blockchains.Select blockchain = 3;
+  optional string address = 4;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    DVCryptoWallet dvcryptowallet = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    DVCryptoWallet dvcryptowallet = 2;
+  }
+}
+
+// GetList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional recipients.GetListRequest recipient = 1;
+  optional TypeList wallet_type = 2;
+  optional blockchains.GetListRequest blockchain = 3;
+  optional string address = 4;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    DVCryptoWallet dvcryptowallet = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    DVCryptoWallet dvcryptowallet = 2;
+  }
+}

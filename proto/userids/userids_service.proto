@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package userids;
+
+import "userids/userids.proto";
+
+service Service {
+    rpc Create(CreateRequest) returns (CreateResponse) {}
+    rpc Update(UpdateRequest) returns (UpdateResponse) {}
+    rpc Get(GetRequest) returns (GetResponse) {}
+    rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+    rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+    rpc SetAddresses(SetAddressesRequest) returns (SetAddressesResponse) {}
+    rpc AddAddresses(AddAddressesRequest) returns (AddAddressesResponse) {}
+    rpc UpdateAddress(UpdateAddressRequest) returns (UpdateAddressResponse) {}
+    rpc RemoveAddresses(RemoveAddressesRequest) returns (RemoveAddressesResponse) {}
+    rpc SetContacts(SetContactsRequest) returns (SetContactsResponse) {}
+    rpc AddContacts(AddContactsRequest) returns (AddContactsResponse) {}
+    rpc UpdateContact(UpdateContactRequest) returns (UpdateContactResponse) {}
+    rpc RemoveContacts(RemoveContactsRequest) returns (RemoveContactsResponse) {}
+    rpc SetIncomes(SetIncomesRequest) returns (SetIncomesResponse) {}
+    rpc AddIncomes(AddIncomesRequest) returns (AddIncomesResponse) {}
+    rpc UpdateIncome(UpdateIncomeRequest) returns (UpdateIncomeResponse) {}
+    rpc RemoveIncomes(RemoveIncomesRequest) returns (RemoveIncomesResponse) {}
+}

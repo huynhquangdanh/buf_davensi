@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package cryptos;
+
+import "common/errors.proto";
+import "uoms/uoms.proto";
+
+enum Type {
+  TYPE_UNSPECIFIED = 0;
+  TYPE_UTILITY = 1;
+  TYPE_SECURITY = 2;
+  TYPE_PAYMENT = 3;
+  TYPE_EXCHANGE = 4;
+  TYPE_NFT = 5;
+  TYPE_STABLECOIN = 6;
+  TYPE_DEFI = 7;
+  TYPE_TOKEN = 8;
+  TYPE_ASSETBACKED = 9;
+}
+
+message TypeList {
+  repeated Type list = 1;
+}
+
+// Backed by tables 'uoms' + 'cryptos'
+// cryptos are uoms of type 2
+message Crypto {
+  // Fields from table 'uoms'
+  uoms.UoM uom =1;
+  // Fields from table 'cryptos'
+  Type crypto_type = 2;
+}
+
+message List {
+  repeated Crypto list = 1;
+}
+
+message CreateRequest {
+  uoms.CreateRequest uom = 1;
+  optional Type crypto_type = 2; // Default: TYPE_UNSPECIFIED
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    Crypto crypto = 2;
+  }
+}
+
+message UpdateRequest {
+  uoms.UpdateRequest uom = 1;
+  optional Type crypto_type = 2;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    Crypto crypto = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    Crypto crypto = 2;
+  }
+}
+
+// GetCryptoList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional uoms.GetListRequest uom = 1;
+  optional Type crypto_type = 2;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    Crypto crypto = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    Crypto crypto = 2;
+  }
+}

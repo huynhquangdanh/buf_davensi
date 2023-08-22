@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package blockchains;
+
+import "blockchains/blockchains.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc SetCryptos(SetCryptosRequest) returns (SetCryptosResponse) {}
+  rpc AddCryptos(AddCryptosRequest) returns (AddCryptosResponse) {}
+  rpc UpdateCrypto(UpdateCryptoRequest) returns (UpdateCryptoResponse) {}
+  rpc RemoveCryptos(RemoveCryptosRequest) returns (RemoveCryptosResponse) {}
+}

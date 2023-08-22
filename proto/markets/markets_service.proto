@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package markets;
+
+import "markets/markets.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+}

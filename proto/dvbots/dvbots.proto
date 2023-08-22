@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+package dvbots;
+
+import "common/errors.proto";
+import "common/statuses.proto";
+import "recipients/recipients.proto";
+
+enum Type {
+  TYPE_UNSPECIFIED = 0;
+  TYPE_DCA = 1;
+  TYPE_GRID = 2;
+  TYPE_BASKET = 3;
+}
+
+message TypeList {
+  repeated Type list = 1;
+}
+
+// TO-DO: to be completed
+enum BotState {
+  BOT_STATE_UNSPECIFIED = 0;
+  BOT_STATE_SCHEDULED = 1;
+  BOT_STATE_ACTIVE = 2;
+  BOT_STATE_PAUSED = 3;
+  BOT_STATE_STOPPED = 4;
+}
+
+message BotStateList {
+  repeated BotState list = 1;
+}
+
+// Backed by table 'recipients' + 'dvbots'
+// dvbots are recipients of type 4
+message DVBot {
+  recipients.Recipient recipient = 1;
+  // Fields from table 'dvbots'
+  Type bot_type = 2;
+  string default_params_name = 3;
+  BotState bot_state = 4;
+  // TO-DO: Add more fields from table 'dvbots'
+}
+
+message List {
+  repeated DVBot list = 1;
+}
+
+message CreateRequest {
+  recipients.CreateRequest recipient = 1;
+  Type bot_type = 2;
+  optional string default_params_name = 3;
+  optional BotState bot_status = 4; // Default: STATUS_SCHEDULED
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    DVBot dvbot = 2;
+  }
+}
+
+message UpdateRequest {
+  recipients.UpdateRequest recipient = 1;
+  optional Type bot_type = 2;
+  optional string default_params_name = 3;
+  optional BotState bot_status = 4;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    DVBot dvbot = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    DVBot dvbot = 2;
+  }
+}
+
+// GetList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional recipients.GetListRequest recipient = 1;
+  optional TypeList bot_type = 2;
+  optional string default_params_name = 3;
+  optional BotStateList bot_status = 4;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    DVBot dvbot = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    DVBot dvbot = 2;
+  }
+}
+
+
+// Parameterization
+
+// Backed by table 'dvbots_params' + 'dvbots_params_default'
+
+message Parameter {
+  string bot_id = 1;
+  string key = 2;
+  string value = 3;
+  common.Status status = 4;
+}
+
+message ParameterList {
+  repeated Parameter list = 1;
+}
+
+message KeyValue {
+  string key = 1; // the list of possible keys is defined in table 'dvbots_parames_default'
+  string value = 2;
+}
+
+message KeyValueList {
+  repeated KeyValue list = 1;
+}
+
+message SetParameterRequest {
+  string bot_id = 1;
+  string key = 2;
+  optional string value = 3; // if no value is provided, default value from table 'parameters_default' is provided
+}
+
+message SetParameterResponse {
+  oneof response {
+    common.Error error = 1;
+    Parameter parameter = 2;
+  }
+}
+
+// Remove will just set the status in table 'parameters' to TERMINATED
+message RemoveParameterRequest {
+  string bot_id = 1;
+  string key = 2;
+}
+
+message RemoveParameterResponse {
+  oneof response {
+    common.Error error = 1;
+    Parameter parameter = 2;
+  }
+}
+
+message GetParameterRequest {
+  string bot_id = 1;
+  string key = 2;
+}
+
+message GetParameterResponse {
+  oneof response {
+    common.Error error = 1;
+    Parameter parameter = 2;  // if no value found in table 'bot_preferences' for the specified key, the default value from table 'bots_preferences_default' is provided
+  }
+}
+
+message GetParameterListRequest {
+  string bot_id = 1;
+  optional string key_prefix = 2; // use SQL " LIKE 'key_prefix%' " instead of " = "
+}
+
+message GetParameterListResponse {
+  oneof response {
+    common.Error error = 1;
+    ParameterList parameters = 2;
+  }
+}
+
+message ResetParameterRequest {
+  string bot_id = 1;
+  optional string key_prefix = 2; // use SQL " LIKE 'key_prefix%' " instead of " = "
+}
+
+message ResetParameterResponse {
+  oneof response {
+    common.Error error = 1;
+    ParameterList parameters = 2;
+  }
+}

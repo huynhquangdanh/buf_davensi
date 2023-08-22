@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package fiats;
+
+import "common/errors.proto";
+import "uoms/uoms.proto";
+
+// Backed by tables 'uoms' + 'fiats'
+// fiats are uoms of type 1
+message Fiat {
+  // Fields from table 'uoms'
+  uoms.UoM uom = 1;
+  // Fields from table 'fiats'
+  optional string iso4217_num = 2;
+}
+
+message List {
+  repeated Fiat list = 1;
+}
+
+message CreateRequest {
+  uoms.CreateRequest uom = 1;
+  optional string iso4217_num = 2;
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    Fiat fiat = 2;
+  }
+}
+
+message UpdateRequest {
+  uoms.UpdateRequest uom = 1;
+  optional string iso4217_num = 2;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    Fiat fiat = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    Fiat fiat = 2;
+  }
+}
+
+// GetFiatList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional uoms.GetListRequest uom = 1;
+  optional string iso4217_num = 9;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    Fiat fiat = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    Fiat fiat = 2;
+  }
+}

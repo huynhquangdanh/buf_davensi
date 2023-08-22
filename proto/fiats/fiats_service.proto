@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package fiats;
+
+import "fiats/fiats.proto";
+import "uoms/uoms.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(uoms.GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(uoms.DeleteRequest) returns (DeleteResponse) {}
+}

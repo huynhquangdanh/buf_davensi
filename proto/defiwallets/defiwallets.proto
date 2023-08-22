@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package defiwallets;
+
+import "common/errors.proto";
+import "recipients/recipients.proto";
+import "blockchains/blockchains.proto";
+
+// Backed by table 'recipients' + 'defiwallets'
+// dvbots are recipients of type 32
+message DeFiWallet {
+  recipients.Recipient recipient = 1;
+  // Fields from table 'defiwallets'
+  blockchains.Blockchain blockchain = 2;
+  string address = 3;
+  // TO-DO: Add more fields from table 'defiwallets'
+}
+
+message List {
+  repeated DeFiWallet list = 1;
+}
+
+message CreateRequest {
+  recipients.CreateRequest recipient = 1;
+  blockchains.Select blockchain = 2;
+  string address = 3;
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    DeFiWallet defiwallet = 2;
+  }
+}
+
+message UpdateRequest {
+  recipients.UpdateRequest recipient = 1;
+  optional blockchains.Select blockchain = 2;
+  optional string address = 3;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    DeFiWallet defiwallet = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    DeFiWallet defiwallet = 2;
+  }
+}
+
+// GetList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional recipients.GetListRequest recipient = 1;
+  optional blockchains.GetListRequest blockchain = 2;
+  optional string address = 3;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    DeFiWallet defiwallet = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    DeFiWallet defiwallet = 2;
+  }
+}

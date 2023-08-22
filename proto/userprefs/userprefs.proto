@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package userprefs;
+
+import "common/errors.proto";
+import "users/users.proto";
+import "common/statuses.proto";
+
+// Backed by table 'userprefs' and 'userprefs_default'
+message UserPref {
+  users.User user = 1;
+  string key = 2;
+  string value = 3;
+  common.Status status = 4;
+}
+
+message UserPrefList {
+  repeated UserPref list = 1;
+}
+
+message KeyValue {
+  string key = 1; // the list of possible keys is defined in table 'userprefs_default'
+  string value = 2;
+}
+
+message KeyValueList {
+  repeated KeyValue list = 1;
+}
+
+message SetRequest {
+  users.Select user = 1;
+  string key = 2;
+  optional string value = 3; // if no value is provided, default value from table 'userprefs_default' is provided
+}
+
+message SetResponse {
+  oneof response {
+    common.Error error = 1;
+    UserPref userpref = 2;
+  }
+}
+
+// Remove will just set the status in table 'userprefs' to TERMINATED
+message RemoveRequest {
+  users.Select user = 1;
+  string key = 2;
+}
+
+message RemoveResponse {
+  oneof response {
+    common.Error error = 1;
+    UserPref userpref = 2;
+  }
+}
+
+message GetRequest {
+  users.Select user = 1;
+  string key = 2;
+}
+
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    UserPref userpref = 2;  // if no value found in table 'user_preferences' for the specified key, the default value from table 'users_preferences_default' is provided
+  }
+}
+
+message GetListRequest {
+  users.Select user = 1;
+  optional string key_prefix = 2; // use SQL " LIKE 'key_prefix%' " instead of " = "
+}
+
+message GetListResponse {
+  oneof response {
+    common.Error error = 1;
+    UserPrefList userprefs = 2;
+  }
+}
+
+message ResetRequest {
+  users.Select user = 1;
+  optional string key_prefix = 2; // use SQL " LIKE 'key_prefix%' " instead of " = "
+}
+
+message ResetResponse {
+  oneof response {
+    common.Error error = 1;
+    UserPrefList userprefs = 2;
+  }
+}

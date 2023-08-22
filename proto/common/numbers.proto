@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package common;
+
+import "google/protobuf/timestamp.proto";
+
+message UInt32Boundary {
+  oneof boundary {
+    uint32 incl = 1; // Inclusive
+    uint32 excl = 2; // Exclusive
+  }
+}
+
+message UInt32Range {
+  optional UInt32Boundary from = 1;
+  optional UInt32Boundary to = 2;
+}
+
+message UInt32Values {
+  oneof select {
+    uint32 single = 1;
+    UInt32Range range = 2;
+  }
+}
+
+message UInt32ValueList {
+  repeated UInt32Values list = 1;
+}
+
+message UInt64Boundary {
+  oneof boundary {
+    uint64 incl = 1; // Inclusive
+    uint64 excl = 2; // Exclusive
+  }
+}
+
+message UInt64Range {
+  optional UInt64Boundary from = 1;
+  optional UInt64Boundary to = 2;
+}
+
+message UInt64Values {
+  oneof select {
+    uint64 single = 1;
+    UInt64Range range = 2;
+  }
+}
+
+message UInt64ValueList {
+  repeated UInt64Values list = 1;
+}
+
+message Decimal {
+  string value = 1;
+}
+
+message DecimalBoundary {
+  oneof boundary {
+    Decimal incl = 1; // Inclusive
+    Decimal excl = 2; // Exclusive
+  }
+}
+
+message DecimalRange {
+  optional DecimalBoundary from = 1;
+  optional DecimalBoundary to = 2;
+}
+
+message DecimalValues {
+  oneof select {
+    Decimal single = 1;
+    DecimalRange range = 2;
+  }
+}
+
+message DecimalValueList {
+  repeated DecimalValues list = 1;
+}
+
+message TimestampBoundary {
+  oneof boundary {
+    google.protobuf.Timestamp incl = 1; // Inclusive
+    google.protobuf.Timestamp excl = 2; // Exclusive
+  }
+}
+
+message TimestampRange {
+  optional TimestampBoundary from = 1;
+  optional TimestampBoundary to = 2;
+}
+
+message TimestampValues {
+  oneof select {
+    google.protobuf.Timestamp single = 1;
+    TimestampRange range = 2;
+  }
+}
+
+message TimestampValueList {
+  repeated TimestampValues list = 1;
+}

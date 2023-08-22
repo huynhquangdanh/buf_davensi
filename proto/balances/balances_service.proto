@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package balances;
+
+import "balances/balances.proto";
+
+service Service {
+  rpc Revaluate(RevaluateRequest) returns (RevaluateResponse) {}
+  rpc GetTimeSeries(GetTimeSeriesRequest) returns (stream GetTimeSeriesResponse) {}
+}

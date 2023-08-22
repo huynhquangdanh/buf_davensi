@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package cexaccounts;
+
+import "common/errors.proto";
+import "recipients/recipients.proto";
+import "fsproviders/fsproviders.proto";
+
+// Backed by table 'recipients' + 'cexaccounts'
+// cexaccounts are recipients of type 8
+message CExAccount {
+  recipients.Recipient recipient = 1;
+  // Fields from table 'cexaccounts'
+  fsproviders.FSProvider provider = 2;
+  string api_vault_key = 3;
+  string api_secret_vault_key = 4;
+  // TO-DO: Add more fields from table 'cexaccounts'
+}
+
+message List {
+  repeated CExAccount list = 1;
+}
+
+message CreateRequest {
+  recipients.CreateRequest recipient = 1;
+  fsproviders.Select provider = 2;
+  optional string api_vault_key = 3; // if not specified, a new vault key is created in table 'uservaults' for the user
+  optional string api_secret_vault_key = 4; // if not specified, a new vault key is created in table 'uservaults' for the user
+}
+
+message CreateResponse {
+  oneof response {
+    common.Error error = 1;
+    CExAccount cexaccount = 2;
+  }
+}
+
+message UpdateRequest {
+  recipients.UpdateRequest recipient = 1;
+  optional fsproviders.Select provider = 2;
+  optional string api_vault_key = 3;
+  optional string api_secret_vault_key = 4;
+}
+
+message UpdateResponse {
+  oneof response {
+    common.Error error = 1;
+    CExAccount cexaccount = 2;
+  }
+}
+
+// An error is returned if there is more than one record found.
+message GetResponse {
+  oneof response {
+    common.Error error = 1;
+    CExAccount cexaccount = 2;
+  }
+}
+
+// GetList will use SQL 'LIKE' instead of '=' for string fields
+message GetListRequest {
+  optional recipients.GetListRequest recipient = 1;
+  optional fsproviders.GetListRequest provider = 2;
+  optional string api_vault_key = 3;
+  optional string api_secret_vault_key = 4;
+}
+
+message GetListResponse { // ListResponse is formatted for streaming
+  oneof response {
+    common.Error error = 1;
+    CExAccount cexaccount = 2;
+  }
+}
+
+message DeleteResponse {
+  oneof response {
+    common.Error error = 1;
+    CExAccount cexaccount = 2;
+  }
+}

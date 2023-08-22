@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package recipients;
+
+import "recipients/recipients.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc Share(ShareRequest) returns (ShareResponse) {}
+  rpc Unshare(UnshareRequest) returns (UnshareResponse) {}
+  rpc GetShareList(GetShareListRequest) returns (GetShareListResponse) {}
+}

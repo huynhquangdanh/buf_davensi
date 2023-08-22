@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package countries;
+
+import "countries/countries.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc SetFiats(SetFiatsRequest) returns (SetFiatsResponse) {}
+  rpc AddFiats(AddFiatsRequest) returns (AddFiatsResponse) {}
+  rpc GetFiats(GetFiatsRequest) returns (GetFiatsResponse) {}
+  rpc RemoveFiats(RemoveFiatsRequest) returns (RemoveFiatsResponse) {}
+  rpc SetCryptos(SetCryptosRequest) returns (SetCryptosResponse) {}
+  rpc AddCryptos(AddCryptosRequest) returns (AddCryptosResponse) {}
+  rpc GetCryptos(GetCryptosRequest) returns (GetCryptosResponse) {}
+  rpc RemoveCryptos(RemoveCryptosRequest) returns (RemoveCryptosResponse) {}
+  rpc SetMarkets(SetMarketsRequest) returns (SetMarketsResponse) {}
+  rpc AddMarkets(AddMarketsRequest) returns (AddMarketsResponse) {}
+  rpc GetMarkets(GetMarketsRequest) returns (GetMarketsResponse) {}
+  rpc RemoveMarkets(RemoveMarketsRequest) returns (RemoveMarketsResponse) {}
+}

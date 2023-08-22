@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package common;
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_ACTIVE = 1;
+  STATUS_SUSPENDED = 2;
+  STATUS_DEPRECATED = 3;
+  STATUS_TERMINATED = 255;
+}
+
+message StatusList {
+  repeated Status list = 1;
+}

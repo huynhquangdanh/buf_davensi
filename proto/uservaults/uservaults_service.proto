@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package uservaults;
+
+import "uservaults/uservaults.proto";
+
+service Service {
+  rpc Set(SetRequest) returns (SetResponse) {} // Upsert
+  rpc Remove(RemoveRequest) returns (RemoveResponse) {} // Delete: set status = terrminated
+  rpc Get(GetRequest) returns (GetResponse) {} // only get item with status = active. NOT found if status <> active
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {} // only for BO admin
+  rpc Reset(ResetRequest) returns (stream ResetResponse) {} // Remove all items (status = terrminated) of a user
+}

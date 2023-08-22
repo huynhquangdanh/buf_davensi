@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package ohlcvt;
+
+import "ohlcvt/ohlcvt.proto";
+
+service Service {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc GetList(GetListRequest) returns (stream GetListResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
+  rpc GetTimeSeries(GetTimeSeriesRequest) returns (stream GetTimeSeriesResponse) {}
+}

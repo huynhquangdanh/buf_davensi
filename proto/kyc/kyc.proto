@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package kyc;
+
+enum Section {
+    SECTION_UNSPECIFIED = 0;
+    SECTION_CREDENTIALS = 1;
+    SECTION_PHYSIQUE = 2;
+    SECTION_LIVELINESS = 3;
+    SECTION_SOCIAL = 4;
+    SECTION_RESIDENCES = 5;
+    SECTION_CONTACTS = 6;
+    SECTION_INCOMES = 7;
+  }
+
+  message SectionList {
+    repeated Section list = 1;
+  }
+
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    STATUS_VALIDATED = 1;
+    STATUS_PENDING = 2;
+    STATUS_REJECTED = 3;
+    STATUS_DEPRECATED = 4;
+    STATUS_CANCELED = 5;
+  }
+
+  message StatusList {
+    repeated Status list = 1;
+  }
